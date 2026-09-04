@@ -57,6 +57,10 @@ class GuildHallApp {
       document.getElementById("current-tab-title").textContent = titles[tabId][0];
       document.getElementById("current-tab-desc").textContent = titles[tabId][1];
     }
+
+    if (tabId === "referral-workbench") {
+      this.ensureWorkbenchSelection();
+    }
   }
 
   async loadData() {
@@ -86,23 +90,21 @@ class GuildHallApp {
 
       this.members.sort((a, b) => b.days_seeking_placement - a.days_seeking_placement);
 
-      this.requisitions = data.labor_requisitions || [
-        {
-          requisition_id: "REQ-2026-9001",
-          employer_pec_id: "PEC-EMP-2026-0001",
-          employer_name: "Apex Defense Systems (Div 1)",
-          local_id: "LOCAL-101",
-          required_tier: "Licensed Journeyman",
-          required_endorsement: "SE-APP",
-          work_modality: "Hybrid",
-          clearance_required: "Public Trust / Commercial Unclassified",
-          date_submitted: "2026-09-01",
-          status: "PENDING",
-          requires_mor: false
-        }
-      ];
+      this.requisitions = (data.labor_requisitions || []).map(r => ({
+        requisition_id: r.requisition_id,
+        employer_pec_id: r.employer_pec_id,
+        employer_name: r.employer_name,
+        local_id: r.local_id || r.target_local_id || "LOCAL-101",
+        required_tier: r.required_tier,
+        required_endorsement: r.required_endorsement && r.required_endorsement !== "ANY" ? r.required_endorsement : null,
+        work_modality: r.work_modality || "Any Modality",
+        clearance_required: r.clearance_required || r.requires_clearance || "Public Trust / Commercial Unclassified",
+        date_submitted: r.date_submitted || "2026-09-01",
+        status: r.status === "PENDING_REVIEW" ? "PENDING" : (r.status || "PENDING"),
+        requires_mor: r.requires_mor ?? false
+      }));
 
-      this.referralSlips = [];
+      this.referralSlips = data.referral_slips || [];
       this.renderAll();
     } catch (err) {
       console.error("Failed to load guild mock data:", err);
@@ -342,6 +344,7 @@ class GuildHallApp {
   renderWorkbenchSelect() {
     const select = document.getElementById("workbench-requisition-select");
     if (!select) return;
+    const currentVal = select.value;
     select.innerHTML = '<option value="">-- Choose Requisition to Evaluate --</option>';
     this.requisitions.filter(r => r.status === "PENDING").forEach(r => {
       const opt = document.createElement("option");
@@ -349,6 +352,17 @@ class GuildHallApp {
       opt.textContent = `${r.requisition_id} - ${r.employer_name} (${r.required_tier})`;
       select.appendChild(opt);
     });
+    if (currentVal && Array.from(select.options).some(o => o.value === currentVal)) {
+      select.value = currentVal;
+    }
+  }
+
+  ensureWorkbenchSelection() {
+    const select = document.getElementById("workbench-requisition-select");
+    if (select && !select.value && select.options.length > 1) {
+      select.selectedIndex = 1;
+      this.loadWorkbenchRequisition();
+    }
   }
 
   startDispatchWorkbench(reqId) {
@@ -518,6 +532,9 @@ class GuildHallApp {
         } else if (val === "SE-ICS") {
           advisory.style.display = "block";
           if (textSpan) textSpan.textContent = "SE-ICS is classified as a Persistent Structural Deficit (PLSI 20.0% >= 20%). Multi-district traveler referral and Supervised Specialty Trainee dispatch under an active Master of Record are authorized.";
+        } else if (val === "SE-MED") {
+          advisory.style.display = "block";
+          if (textSpan) textSpan.textContent = "SE-MED is classified as a Persistent Structural Deficit (PLSI 22.5% >= 20%). Accelerated cross-jurisdictional traveler referral and FDA 524B supervised bridge training are authorized.";
         } else {
           advisory.style.display = "none";
         }

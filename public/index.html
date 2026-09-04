@@ -211,6 +211,10 @@
             </div>
             <button class="btn btn-primary btn-sm" onclick="window.app.openRequisitionModal()">+ New Requisition</button>
           </div>
+          <div style="background:rgba(0,180,216,0.06); border-bottom:1px solid var(--border-color); padding:10px 16px; font-size:12px; color:var(--text-secondary); display:flex; gap:10px; align-items:center;">
+            <span style="font-weight:700; color:var(--accent-cyan);">Workflow Step 1:</span>
+            <span>Enterprises post bilateral labor requisitions. Recruiter searching is prohibited. Select <strong>Evaluate Queue</strong> on any pending requisition to match qualified FIFO candidates in the Dispatch Workbench.</span>
+          </div>
           <div class="table-responsive">
             <table class="data-table">
               <thead>
@@ -237,6 +241,10 @@
             <span class="card-subtitle">Neutral bilateral verification matching FIFO candidate seniority to employer requisitions.</span>
           </div>
           <div class="card-body">
+            <div style="background:rgba(16,185,129,0.06); border:1px solid rgba(16,185,129,0.2); border-radius:6px; padding:10px 14px; margin-bottom:16px; font-size:12px; color:var(--text-secondary);">
+              <span style="font-weight:700; color:#10b981;">Workflow Step 2:</span>
+              <span>The Dispatch Officer validates strict FIFO chronological seniority on active Out-of-Work Books. Issuing a Referral Slip directs the worker to the PEC employer at guaranteed statutory wage floors.</span>
+            </div>
             <div class="workbench-grid" style="display:grid; grid-template-columns: 1fr 1.5fr; gap: 20px;">
               <div class="workbench-panel">
                 <h4>1. Select Pending Requisition</h4>
@@ -263,6 +271,10 @@
           <div class="card-header">
             <h3>Bilateral Dispatch Referral Slips</h3>
             <span class="card-subtitle">Official referral orders issued by Guild Dispatch Officers to PEC employers.</span>
+          </div>
+          <div style="background:rgba(0,180,216,0.06); border-bottom:1px solid var(--border-color); padding:10px 16px; font-size:12px; color:var(--text-secondary);">
+            <span style="font-weight:700; color:var(--accent-cyan);">Workflow Step 3:</span>
+            <span>Binding bilateral referral contracts issued under LMRA Section 302(c). Protects prevailing wage floors, health trust contributions, and supervisory ratios.</span>
           </div>
           <div class="table-responsive">
             <table class="data-table">
@@ -411,6 +423,16 @@
                     <td style="font-size:12px; color:var(--accent-cyan); font-weight:600;">JATC Ratification: Expand Core Rotations</td>
                   </tr>
                   <tr data-plsi-category="DEFICIT">
+                    <td><strong>SE-MED (Medical Device &amp; Clinical Safety)</strong></td>
+                    <td style="text-align:right; font-family:monospace;">21.0%</td>
+                    <td style="text-align:right; font-family:monospace;">22.0%</td>
+                    <td style="text-align:right; font-family:monospace;">23.0%</td>
+                    <td style="text-align:right; font-family:monospace;">24.0%</td>
+                    <td style="text-align:right; font-family:monospace; font-weight:700; color:#f59e0b;">22.5%</td>
+                    <td><span class="badge" style="background:rgba(245,158,11,0.2); color:#f59e0b;">Persistent Deficit</span></td>
+                    <td style="font-size:12px; color:var(--accent-cyan); font-weight:600;">JATC Ratification: Accelerated Traveler Referral &amp; FDA 524B Bridge</td>
+                  </tr>
+                  <tr data-plsi-category="DEFICIT">
                     <td><strong>SE-ICS (Industrial Control &amp; OT Systems)</strong></td>
                     <td style="text-align:right; font-family:monospace;">18.0%</td>
                     <td style="text-align:right; font-family:monospace;">19.5%</td>
@@ -430,6 +452,16 @@
                     <td><span class="badge" style="background:rgba(16,185,129,0.2); color:#10b981;">Transient Demand Spike (Normalized)</span></td>
                     <td style="font-size:12px; color:var(--text-muted);">Maintain Baseline (Absorbed via Modular Continuing Education)</td>
                   </tr>
+                  <tr data-plsi-category="SPIKE">
+                    <td><strong>SE-PKI (Cryptographic Infrastructure &amp; PKI)</strong></td>
+                    <td style="text-align:right; font-family:monospace; color:#ef4444; font-weight:600;">31.0%</td>
+                    <td style="text-align:right; font-family:monospace;">18.0%</td>
+                    <td style="text-align:right; font-family:monospace;">12.0%</td>
+                    <td style="text-align:right; font-family:monospace;">8.5%</td>
+                    <td style="text-align:right; font-family:monospace; font-weight:700; color:#10b981;">17.4%</td>
+                    <td><span class="badge" style="background:rgba(16,185,129,0.2); color:#10b981;">Transient Demand Spike (Normalized)</span></td>
+                    <td style="font-size:12px; color:var(--text-muted);">Maintain Baseline (PQC Migration Absorbed via Modular Labs)</td>
+                  </tr>
                   <tr data-plsi-category="BALANCED">
                     <td><strong>SE-OFF (Offensive Security &amp; Pen Testing)</strong></td>
                     <td style="text-align:right; font-family:monospace;">10.0%</td>
@@ -447,6 +479,26 @@
                     <td style="text-align:right; font-family:monospace;">8.5%</td>
                     <td style="text-align:right; font-family:monospace;">9.0%</td>
                     <td style="text-align:right; font-family:monospace; font-weight:700; color:#10b981;">8.2%</td>
+                    <td><span class="badge badge-active">Balanced Supply</span></td>
+                    <td style="font-size:12px; color:var(--text-muted);">Standard Maintenance (No Action Required)</td>
+                  </tr>
+                  <tr data-plsi-category="BALANCED">
+                    <td><strong>SE-APP (Application &amp; Product Security)</strong></td>
+                    <td style="text-align:right; font-family:monospace;">12.0%</td>
+                    <td style="text-align:right; font-family:monospace;">11.5%</td>
+                    <td style="text-align:right; font-family:monospace;">11.0%</td>
+                    <td style="text-align:right; font-family:monospace;">11.0%</td>
+                    <td style="text-align:right; font-family:monospace; font-weight:700; color:#10b981;">11.4%</td>
+                    <td><span class="badge badge-active">Balanced Supply</span></td>
+                    <td style="font-size:12px; color:var(--text-muted);">Standard Maintenance (No Action Required)</td>
+                  </tr>
+                  <tr data-plsi-category="BALANCED">
+                    <td><strong>SE-ICAM (Identity, Credential &amp; Access Mgmt)</strong></td>
+                    <td style="text-align:right; font-family:monospace;">10.0%</td>
+                    <td style="text-align:right; font-family:monospace;">9.5%</td>
+                    <td style="text-align:right; font-family:monospace;">10.0%</td>
+                    <td style="text-align:right; font-family:monospace;">9.5%</td>
+                    <td style="text-align:right; font-family:monospace; font-weight:700; color:#10b981;">9.8%</td>
                     <td><span class="badge badge-active">Balanced Supply</span></td>
                     <td style="font-size:12px; color:var(--text-muted);">Standard Maintenance (No Action Required)</td>
                   </tr>
@@ -508,6 +560,8 @@
               <option value="SE-MED">SE-MED</option>
               <option value="SE-DFIR">SE-DFIR</option>
               <option value="SE-AIML">SE-AIML</option>
+              <option value="SE-ICAM">SE-ICAM</option>
+              <option value="SE-PKI">SE-PKI</option>
             </select>
           </div>
           <div style="flex:1;">
