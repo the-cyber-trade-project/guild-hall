@@ -36,10 +36,10 @@ class GuildHallApp {
   }
 
   switchTab(tabId) {
-    document.querySelectorAll(".nav-item").forEach(i => i.classList.remove("active"));
+    document.querySelectorAll(".tab-btn").forEach(i => i.classList.remove("active"));
     document.querySelectorAll(".tab-pane").forEach(p => p.classList.remove("active"));
 
-    const nav = document.querySelector(`.nav-item[data-tab="${tabId}"]`);
+    const nav = document.querySelector(`.tab-btn[data-tab="${tabId}"]`);
     const pane = document.getElementById(`tab-${tabId}`);
     if (nav) nav.classList.add("active");
     if (pane) pane.classList.add("active");
@@ -146,27 +146,27 @@ class GuildHallApp {
       const endorsements = m.active_endorsements.map(e => `<span class="badge badge-subtle" style="font-size:10px; margin-right:4px;">${escapeHTML(e)}</span>`).join("");
 
       tr.innerHTML = `
-        <td style="font-weight:700;">${rankBadge}</td>
-        <td>
+        <td data-label="FIFO Rank" style="font-weight:700;">${rankBadge}</td>
+        <td data-label="Practitioner">
           <strong>${escapeHTML(m.name)}</strong><br>
           <span style="font-size:11px; font-family:monospace; color:var(--text-muted);">${escapeHTML(m.trade_id)}</span>
         </td>
-        <td>
+        <td data-label="License Tier">
           <span class="badge badge-primary">${escapeHTML(m.tier)}</span>
           <div style="margin-top:4px;">${endorsements}</div>
         </td>
-        <td>${escapeHTML(m.assigned_jatc_local)}</td>
-        <td><span class="badge badge-subtle">${escapeHTML(m.dispatch_book)}</span></td>
-        <td>
+        <td data-label="Assigned Local">${escapeHTML(m.assigned_jatc_local)}</td>
+        <td data-label="Dispatch Book"><span class="badge badge-subtle">${escapeHTML(m.dispatch_book)}</span></td>
+        <td data-label="Days on Queue">
           <strong style="${agingAlert ? 'color:#ef4444;' : ''}">${m.days_seeking_placement} days</strong>
           ${agingAlert ? '<br><span class="badge" style="background:rgba(239,68,68,0.2); color:#ef4444; font-size:9px;">AGING &gt;= 30d</span>' : ''}
         </td>
-        <td>
+        <td data-label="Modality &amp; Clearance">
           <span style="font-size:11px;">${escapeHTML(m.work_modality_preference)}</span><br>
           <span style="font-size:10px; color:var(--text-muted);">${escapeHTML(m.security_clearance)}</span>
         </td>
-        <td style="font-family:monospace;">${m.total_verified_hours.toLocaleString()} hrs</td>
-        <td>
+        <td data-label="Verified Hours" style="font-family:monospace;">${m.total_verified_hours.toLocaleString()} hrs</td>
+        <td data-label="Action">
           <button class="btn btn-secondary btn-sm" onclick="window.app.quickDispatch('${escapeHTML(m.trade_id)}')">Match</button>
         </td>
       `;
@@ -201,22 +201,22 @@ class GuildHallApp {
       const tr = document.createElement("tr");
       const statusClass = r.status === "PENDING" ? "badge-active" : (r.status === "REFERRED" ? "badge-success" : "badge-subtle");
       tr.innerHTML = `
-        <td style="font-family:monospace; font-weight:700;">${escapeHTML(r.requisition_id)}</td>
-        <td>
+        <td data-label="Requisition ID" style="font-family:monospace; font-weight:700;">${escapeHTML(r.requisition_id)}</td>
+        <td data-label="Employer">
           <strong>${escapeHTML(r.employer_name)}</strong><br>
           <span style="font-size:11px; font-family:monospace; color:var(--text-muted);">${escapeHTML(r.employer_pec_id)}</span>
         </td>
-        <td>${escapeHTML(r.local_id)}</td>
-        <td>
+        <td data-label="Target Local">${escapeHTML(r.local_id)}</td>
+        <td data-label="Required Tier">
           <span class="badge badge-primary">${escapeHTML(r.required_tier)}</span>
           ${r.required_endorsement && r.required_endorsement !== 'None' ? `<span class="badge badge-subtle" style="font-size:10px; margin-left:4px;">${escapeHTML(r.required_endorsement)}</span>` : ''}
         </td>
-        <td>
+        <td data-label="Modality &amp; Clearance">
           <span style="font-size:11px;">${escapeHTML(r.work_modality)}</span><br>
           <span style="font-size:10px; color:var(--text-muted);">${escapeHTML(r.clearance_required)}</span>
         </td>
-        <td><span class="badge ${statusClass}">${escapeHTML(r.status)}</span></td>
-        <td>
+        <td data-label="Status"><span class="badge ${statusClass}">${escapeHTML(r.status)}</span></td>
+        <td data-label="Action">
           ${r.status === "PENDING" 
             ? `<button class="btn btn-primary btn-sm" onclick="window.app.startDispatchWorkbench('${escapeHTML(r.requisition_id)}')">Evaluate Queue</button>`
             : `<span style="font-size:11px; color:var(--text-muted);">Assigned to ${escapeHTML(r.dispatched_trade_id || 'Worker')}</span>`}
@@ -372,15 +372,15 @@ class GuildHallApp {
     this.referralSlips.forEach(s => {
       const tr = document.createElement("tr");
       tr.innerHTML = `
-        <td style="font-family:monospace; font-weight:700;">${escapeHTML(s.referral_id)}</td>
-        <td style="font-family:monospace;">${escapeHTML(s.requisition_id)}</td>
-        <td>${escapeHTML(s.employer_pec_id)}</td>
-        <td><strong>${escapeHTML(s.candidate_name)}</strong><br><span style="font-size:10px; font-family:monospace; color:var(--text-muted);">${escapeHTML(s.candidate_trade_id)}</span></td>
-        <td><span class="badge badge-primary">${escapeHTML(s.tier)}</span></td>
-        <td><strong>${s.wage_step_percentage}% RJPB</strong></td>
-        <td>${escapeHTML(s.dispatching_officer_id)}</td>
-        <td>${escapeHTML(s.referral_date)}</td>
-        <td><span class="badge badge-active">${escapeHTML(s.status)}</span></td>
+        <td data-label="Referral ID" style="font-family:monospace; font-weight:700;">${escapeHTML(s.referral_id)}</td>
+        <td data-label="Requisition" style="font-family:monospace;">${escapeHTML(s.requisition_id)}</td>
+        <td data-label="Employer">${escapeHTML(s.employer_pec_id)}</td>
+        <td data-label="Worker"><strong>${escapeHTML(s.candidate_name)}</strong><br><span style="font-size:10px; font-family:monospace; color:var(--text-muted);">${escapeHTML(s.candidate_trade_id)}</span></td>
+        <td data-label="Tier"><span class="badge badge-primary">${escapeHTML(s.tier)}</span></td>
+        <td data-label="Wage Step"><strong>${s.wage_step_percentage}% RJPB</strong></td>
+        <td data-label="Dispatch Officer">${escapeHTML(s.dispatching_officer_id)}</td>
+        <td data-label="Date">${escapeHTML(s.referral_date)}</td>
+        <td data-label="Status"><span class="badge badge-active">${escapeHTML(s.status)}</span></td>
       `;
       tbody.appendChild(tr);
     });
