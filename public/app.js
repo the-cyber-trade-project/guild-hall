@@ -46,6 +46,7 @@ class GuildHallApp {
 
     const titles = {
       "dispatch-queue": ["Out-of-Work Registers & FIFO Dispatch Hall", "Pillar VI: Neutral bilateral hiring queue enforcing FIFO chronological seniority without recruiter bypass."],
+      "regional-districts": ["Regional District Hubs & MSA Wage Schedules", "Pillar II & Pillar VI: Five permanent Regional District Hubs establishing statutory RJPB wage floors and MSA differentials."],
       "requisitions": ["PEC Employer Labor Requisitions", "Formal labor demands submitted by Participating Employer Council organizations."],
       "referral-workbench": ["Guild Dispatch Officer Referral Desk", "Neutral verification matching qualifying FIFO candidates to active employer requisitions."],
       "referral-history": ["Bilateral Dispatch Referral Slips", "Tamper-evident referral orders issued to PEC employers."]
@@ -62,6 +63,8 @@ class GuildHallApp {
       const res = await fetch("data/mock_guild_data.json");
       const data = await res.json();
       
+      this.locals = data.locals || [];
+
       this.members = (data.practitioners || []).map(p => ({
         trade_id: p.trade_id,
         name: p.name,
@@ -106,12 +109,93 @@ class GuildHallApp {
   }
 
   renderAll() {
+    this.renderLocals();
     this.renderQueue();
     this.renderRequisitions();
     this.renderWorkbenchSelect();
     this.renderReferralSlips();
     this.updateBadges();
   }
+  renderLocals() {
+    const grid = document.getElementById("locals-card-grid");
+    if (!grid) return;
+    grid.innerHTML = "";
+
+    (this.locals || []).forEach(loc => {
+      const card = document.createElement("div");
+      card.style.background = "var(--bg-secondary)";
+      card.style.border = "1px solid var(--border-color)";
+      card.style.borderRadius = "var(--radius-md)";
+      card.style.padding = "1.1rem";
+      card.style.display = "flex";
+      card.style.flexDirection = "column";
+      card.style.justifyContent = "space-between";
+
+      const title = document.createElement("div");
+      title.style.fontWeight = "700";
+      title.style.fontSize = "14px";
+      title.style.color = "#fff";
+      title.style.marginBottom = "4px";
+      title.style.display = "flex";
+      title.style.justifyContent = "space-between";
+      title.style.alignItems = "center";
+      title.innerHTML = `<span>${escapeHTML(loc.name)}</span><span class="badge badge-primary">${escapeHTML(loc.local_id)}</span>`;
+
+      const territory = document.createElement("div");
+      territory.style.fontSize = "11px";
+      territory.style.color = "var(--text-secondary)";
+      territory.style.marginBottom = "10px";
+      territory.style.lineHeight = "1.4";
+      territory.textContent = loc.jurisdiction_territory;
+
+      const zoneSchedule = document.createElement("div");
+      zoneSchedule.style.background = "rgba(0,0,0,0.25)";
+      zoneSchedule.style.border = "1px solid rgba(255,255,255,0.06)";
+      zoneSchedule.style.borderRadius = "var(--radius-sm)";
+      zoneSchedule.style.padding = "10px 12px";
+      zoneSchedule.style.fontSize = "11.5px";
+      zoneSchedule.style.marginBottom = "10px";
+      zoneSchedule.style.lineHeight = "1.55";
+      zoneSchedule.innerHTML = `
+        <div style="font-weight:700; color:var(--text-primary); margin-bottom:6px; font-size:12px; border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:4px;">
+          Local MSA Zone Wage Schedule:
+        </div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:3px; gap:8px;">
+          <span style="color:var(--text-secondary);">&bull; Zone 1 (Metro Core - ${escapeHTML(loc.zone_1_examples)}):</span>
+          <span style="color:var(--accent-emerald); font-weight:700; font-family:var(--font-mono);">$${loc.zone_1_rate.toFixed(2)}/hr</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:3px; gap:8px;">
+          <span style="color:var(--text-secondary);">&bull; Zone 2 (Secondary Metro - ${escapeHTML(loc.zone_2_examples)}):</span>
+          <span style="color:var(--accent-cyan); font-weight:700; font-family:var(--font-mono);">$${loc.zone_2_rate.toFixed(2)}/hr</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; gap:8px;">
+          <span style="color:var(--text-secondary);">&bull; Zone 3 (Non-Metro / Rural Floor):</span>
+          <span style="color:#fff; font-weight:700; font-family:var(--font-mono);">$${loc.zone_3_rate.toFixed(2)}/hr Floor</span>
+        </div>
+      `;
+
+      const metaRow = document.createElement("div");
+      metaRow.style.display = "flex";
+      metaRow.style.justifyContent = "space-between";
+      metaRow.style.alignItems = "center";
+      metaRow.style.fontSize = "11px";
+      metaRow.style.paddingTop = "8px";
+      metaRow.style.borderTop = "1px solid rgba(255,255,255,0.05)";
+      metaRow.innerHTML = `
+        <span style="color:var(--accent-cyan); font-weight:600;">Active Trade Staffing:</span>
+        <span style="color:#fff; font-family:var(--font-mono); font-weight:600;">
+          ${loc.active_master_count || 0} Masters &bull; ${loc.active_journeyman_count || 0} Journeymen &bull; ${loc.active_apprentice_count || 0} Apprentices
+        </span>
+      `;
+
+      card.appendChild(title);
+      card.appendChild(territory);
+      card.appendChild(zoneSchedule);
+      card.appendChild(metaRow);
+      grid.appendChild(card);
+    });
+  }
+
   renderQueue() {
     const tbody = document.getElementById("queue-tbody");
     if (!tbody) return;
@@ -145,29 +229,37 @@ class GuildHallApp {
 
       const endorsements = m.active_endorsements.map(e => `<span class="badge badge-subtle" style="font-size:10px; margin-right:4px;">${escapeHTML(e)}</span>`).join("");
 
+      const clearanceShort = m.security_clearance
+        .replace("Public Trust / Commercial Unclassified", "Public Trust")
+        .replace("TS/SCI (SCIF Eligible)", "TS/SCI (SCIF)");
+
       tr.innerHTML = `
-        <td data-label="FIFO Rank" style="font-weight:700;">${rankBadge}</td>
-        <td data-label="Practitioner">
+        <td class="col-rank" data-label="FIFO Rank" style="font-weight:700;">${rankBadge}</td>
+        <td class="col-practitioner" data-label="Practitioner">
           <strong>${escapeHTML(m.name)}</strong><br>
-          <span style="font-size:11px; font-family:monospace; color:var(--text-muted);">${escapeHTML(m.trade_id)}</span>
+          <span style="font-size:10.5px; font-family:monospace; color:var(--text-muted);">${escapeHTML(m.trade_id)}</span>
         </td>
-        <td data-label="License Tier">
-          <span class="badge badge-primary">${escapeHTML(m.tier)}</span>
-          <div style="margin-top:4px;">${endorsements}</div>
+        <td class="col-tier" data-label="License Tier">
+          <span class="badge badge-primary" style="font-size:10.5px; padding:0.15rem 0.4rem;">${escapeHTML(m.tier)}</span>
+          <div style="margin-top:3px; display:flex; flex-wrap:wrap; gap:2px;">${endorsements}</div>
         </td>
-        <td data-label="Assigned Local">${escapeHTML(m.assigned_jatc_local)}</td>
-        <td data-label="Dispatch Book"><span class="badge badge-subtle">${escapeHTML(m.dispatch_book)}</span></td>
-        <td data-label="Days on Queue">
+        <td class="col-local" data-label="Assigned Local">
+          <span class="badge badge-subtle" style="font-size:10.5px;">${escapeHTML(m.assigned_jatc_local)}</span>
+        </td>
+        <td class="col-book" data-label="Dispatch Book">
+          <span class="badge badge-subtle" style="font-size:10.5px;">${escapeHTML(m.dispatch_book)}</span>
+        </td>
+        <td class="col-queue-days" data-label="Days on Queue">
           <strong style="${agingAlert ? 'color:#ef4444;' : ''}">${m.days_seeking_placement} days</strong>
-          ${agingAlert ? '<br><span class="badge" style="background:rgba(239,68,68,0.2); color:#ef4444; font-size:9px;">AGING &gt;= 30d</span>' : ''}
+          ${agingAlert ? '<br><span class="badge" style="background:rgba(239,68,68,0.2); color:#ef4444; font-size:9px; padding:1px 4px;">AGING &gt;= 30d</span>' : ''}
         </td>
-        <td data-label="Modality &amp; Clearance">
-          <span style="font-size:11px;">${escapeHTML(m.work_modality_preference)}</span><br>
-          <span style="font-size:10px; color:var(--text-muted);">${escapeHTML(m.security_clearance)}</span>
+        <td class="col-modality" data-label="Modality &amp; Clearance">
+          <span style="font-size:11px; font-weight:600;">${escapeHTML(m.work_modality_preference)}</span><br>
+          <span style="font-size:10px; color:var(--text-muted);">${escapeHTML(clearanceShort)}</span>
         </td>
-        <td data-label="Verified Hours" style="font-family:monospace;">${m.total_verified_hours.toLocaleString()} hrs</td>
-        <td data-label="Action">
-          <button class="btn btn-secondary btn-sm" onclick="window.app.quickDispatch('${escapeHTML(m.trade_id)}')">Match</button>
+        <td class="col-hours" data-label="Verified Hours" style="font-family:monospace; font-size:11px;">${m.total_verified_hours.toLocaleString()} h</td>
+        <td class="col-action" data-label="Action">
+          <button class="btn btn-secondary btn-sm" style="padding:0.25rem 0.55rem; font-size:11px;" onclick="window.app.quickDispatch('${escapeHTML(m.trade_id)}')">Match</button>
         </td>
       `;
       tbody.appendChild(tr);
@@ -182,9 +274,16 @@ class GuildHallApp {
   updateBadges() {
     const queueCount = this.members.filter(m => m.is_seeking_placement).length;
     const reqCount = this.requisitions.filter(r => r.status === "PENDING").length;
-    document.getElementById("badge-queue-count").textContent = queueCount;
-    document.getElementById("badge-req-count").textContent = reqCount;
-    document.getElementById("badge-slip-count").textContent = this.referralSlips.length;
+    const localsCount = (this.locals || []).length || 5;
+    const badgeQueue = document.getElementById("badge-queue-count");
+    const badgeReq = document.getElementById("badge-req-count");
+    const badgeSlip = document.getElementById("badge-slip-count");
+    const badgeLocals = document.getElementById("badge-locals-count");
+
+    if (badgeQueue) badgeQueue.textContent = queueCount;
+    if (badgeReq) badgeReq.textContent = reqCount;
+    if (badgeSlip) badgeSlip.textContent = this.referralSlips.length;
+    if (badgeLocals) badgeLocals.textContent = localsCount;
   }
 
   renderRequisitions() {

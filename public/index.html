@@ -89,22 +89,26 @@
       <strong style="color:var(--accent-cyan);">CLIENT-SIDE DEMONSTRATION SANDBOX:</strong> Bilateral requisition matching, queue aging alerts, and referral slip generation compute locally in browser memory. Standalone Python backend engine available in repository.
     </div>
   </div>
-  <!-- Navigation Ribbon (4-Workspace Ecosystem Standard Layout) -->
+  <!-- Navigation Ribbon (5-Workspace Ecosystem Standard Layout) -->
   <nav class="nav-ribbon">
     <div class="container nav-tabs-container">
       <button class="tab-btn active" data-tab="dispatch-queue" onclick="window.app.switchTab('dispatch-queue')">
         <span>1. Out-of-Work Registers</span>
         <span class="tab-badge" id="badge-queue-count">0</span>
       </button>
+      <button class="tab-btn" data-tab="regional-districts" onclick="window.app.switchTab('regional-districts')">
+        <span>2. Regional Districts &amp; Pay</span>
+        <span class="tab-badge" id="badge-locals-count">5</span>
+      </button>
       <button class="tab-btn" data-tab="requisitions" onclick="window.app.switchTab('requisitions')">
-        <span>2. Employer Requisitions</span>
+        <span>3. Employer Requisitions</span>
         <span class="tab-badge" id="badge-req-count">0</span>
       </button>
       <button class="tab-btn" data-tab="referral-workbench" onclick="window.app.switchTab('referral-workbench')">
-        <span>3. Dispatch Officer Workbench</span>
+        <span>4. Dispatch Officer Workbench</span>
       </button>
       <button class="tab-btn" data-tab="referral-history" onclick="window.app.switchTab('referral-history')">
-        <span>4. Referral Slips Issued</span>
+        <span>5. Referral Slips Issued</span>
         <span class="tab-badge" id="badge-slip-count">0</span>
       </button>
     </div>
@@ -134,10 +138,11 @@
             <div class="controls-row">
               <select id="filter-local" class="input-sm" onchange="window.app.filterQueue()">
                 <option value="ALL">All Regional Locals</option>
-                <option value="LOCAL-101">Local 101 - Mid-Atlantic</option>
-                <option value="LOCAL-204">Local 204 - Midwest</option>
-                <option value="LOCAL-302">Local 302 - Western</option>
-                <option value="LOCAL-415">Local 415 - Southern</option>
+                <option value="LOCAL-101">Local 101 - Mid-Atlantic Hub</option>
+                <option value="LOCAL-204">Local 204 - Midwest &amp; Great Lakes</option>
+                <option value="LOCAL-302">Local 302 - Western &amp; Pacific</option>
+                <option value="LOCAL-405">Local 405 - Southern &amp; Gulf Coast</option>
+                <option value="LOCAL-508">Local 508 - Mountain West &amp; Plains</option>
               </select>
               <select id="filter-book" class="input-sm" onchange="window.app.filterQueue()">
                 <option value="ALL">All Dispatch Books</option>
@@ -166,20 +171,31 @@
             <table class="data-table">
               <thead>
                 <tr>
-                  <th>FIFO Rank</th>
-                  <th>Practitioner</th>
-                  <th>License Tier</th>
-                  <th>Assigned Local</th>
-                  <th>Dispatch Book</th>
-                  <th>Days on Queue</th>
-                  <th>Modality &amp; Clearance</th>
-                  <th>Verified Hours</th>
-                  <th>Action</th>
+                  <th class="col-rank">FIFO</th>
+                  <th class="col-practitioner">Practitioner</th>
+                  <th class="col-tier">License Tier</th>
+                  <th class="col-local">Local</th>
+                  <th class="col-book">Dispatch Book</th>
+                  <th class="col-queue-days">Queue Aging</th>
+                  <th class="col-modality">Modality &amp; Clearance</th>
+                  <th class="col-hours">Verified</th>
+                  <th class="col-action">Action</th>
                 </tr>
               </thead>
               <tbody id="queue-tbody"></tbody>
             </table>
           </div>
+        </div>
+      </section>
+
+      <!-- TAB 2: REGIONAL DISTRICTS & PAY -->
+      <section id="tab-regional-districts" class="tab-pane">
+        <div class="card mb-4">
+          <div class="card-header">
+            <h3>Regional District Hubs &amp; MSA Wage Schedules</h3>
+            <span class="card-subtitle">Pillar II &amp; Pillar VI: Five permanent Craft Guild Regional District Hubs establishing statutory RJPB prevailing wage floors, MSA COLI Zone differentials, and active trade staffing rosters across all jurisdictions.</span>
+          </div>
+          <div id="locals-card-grid" class="locals-grid"></div>
         </div>
       </section>
 
@@ -284,10 +300,11 @@
           <div style="flex:1;">
             <label style="display:block; margin-bottom:4px; font-size:12px;">Local</label>
             <select id="modal-local-id" class="input-full" required style="width:100%; padding:8px; border-radius:6px; background:var(--bg-card); color:var(--text-primary); border:1px solid var(--border-color);">
-              <option value="LOCAL-101">Local 101 - Mid-Atlantic</option>
-              <option value="LOCAL-204">Local 204 - Midwest</option>
-              <option value="LOCAL-302">Local 302 - Western</option>
-              <option value="LOCAL-415">Local 415 - Southern</option>
+              <option value="LOCAL-101">Local 101 - Mid-Atlantic Hub</option>
+              <option value="LOCAL-204">Local 204 - Midwest &amp; Great Lakes</option>
+              <option value="LOCAL-302">Local 302 - Western &amp; Pacific</option>
+              <option value="LOCAL-405">Local 405 - Southern &amp; Gulf Coast</option>
+              <option value="LOCAL-508">Local 508 - Mountain West &amp; Plains</option>
             </select>
           </div>
           <div style="flex:1;">

@@ -57,9 +57,9 @@ body {
 }
 
 .container {
-  max-width: 1280px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 0 1.5rem;
+  padding: 0 1.25rem;
 }
 
 /* Portal Header & Ecosystem Navigation */
@@ -328,9 +328,15 @@ body {
 
 .nav-tabs-container {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 8px;
-  padding: 8px 1.5rem;
+  padding: 8px 1.25rem;
+}
+
+@media (max-width: 1100px) {
+  .nav-tabs-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 @media (max-width: 900px) {
@@ -645,6 +651,18 @@ body {
   }
 }
 
+.locals-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 1.1rem;
+}
+
+@media (max-width: 768px) {
+  .locals-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* Ingestion Drop Zone */
 .dropzone {
   border: 2px dashed var(--border-subtle);
@@ -807,27 +825,74 @@ body {
 .data-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   text-align: left;
 }
 
 .data-table th {
   background-color: #0b1120;
-  padding: 0.75rem 1rem;
+  padding: 0.55rem 0.65rem;
   font-weight: 700;
   color: var(--text-secondary);
   border-bottom: 1px solid var(--border-color);
   text-transform: uppercase;
-  letter-spacing: 0.04em;
-  font-size: 0.74rem;
+  letter-spacing: 0.03em;
+  font-size: 0.7rem;
   white-space: nowrap;
 }
 
 .data-table td {
-  padding: 0.75rem 1rem;
+  padding: 0.55rem 0.65rem;
   border-bottom: 1px solid var(--border-color);
   color: var(--text-primary);
   vertical-align: middle;
+  line-height: 1.35;
+}
+
+/* Out-of-work queue compact column optimizations */
+.col-rank {
+  width: 55px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.col-practitioner {
+  min-width: 140px;
+}
+
+.col-tier {
+  min-width: 140px;
+}
+
+.col-local {
+  width: 85px;
+  white-space: nowrap;
+}
+
+.col-book {
+  width: 110px;
+  white-space: nowrap;
+}
+
+.col-queue-days {
+  width: 95px;
+  white-space: nowrap;
+}
+
+.col-modality {
+  min-width: 140px;
+}
+
+.col-hours {
+  width: 85px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.col-action {
+  width: 70px;
+  text-align: center;
+  white-space: nowrap;
 }
 
 .data-table tr:last-child td {
