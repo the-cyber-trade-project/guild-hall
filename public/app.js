@@ -185,6 +185,8 @@ class GuildHallApp {
     document.getElementById("badge-queue-count").textContent = queueCount;
     document.getElementById("badge-req-count").textContent = reqCount;
     document.getElementById("badge-slip-count").textContent = this.referralSlips.length;
+  }
+
   renderRequisitions() {
     const tbody = document.getElementById("requisitions-tbody");
     if (!tbody) return;
@@ -319,8 +321,6 @@ class GuildHallApp {
     }
   }
 
-  }
-}
   executeReferral(reqId, tradeId) {
     const req = this.requisitions.find(r => r.requisition_id === reqId);
     const cand = this.members.find(m => m.trade_id === tradeId);
