@@ -1,0 +1,21 @@
+[project]
+name = "cyber-trade-guild-hall"
+version = "0.1.0"
+description = "Cybersecurity Craft Guild (CCG) Dispatch Hall, Out-of-Work Queue, and Placement Management Portal"
+readme = "README.md"
+authors = [
+    { name = "Daniel Tolczyk", email = "daniel.tolczyk@gmail.com" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "pydantic>=2.10.0",
+]
+
+[build-system]
+requires = ["uv_build>=0.12.5,<0.13.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+]
