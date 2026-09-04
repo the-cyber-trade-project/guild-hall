@@ -50,7 +50,7 @@ class GuildHallApp {
       "requisitions": ["PEC Employer Labor Requisitions", "Formal labor demands submitted by Participating Employer Council organizations."],
       "referral-workbench": ["Guild Dispatch Officer Referral Desk", "Neutral verification matching qualifying FIFO candidates to active employer requisitions."],
       "referral-history": ["Bilateral Dispatch Referral Slips", "Tamper-evident referral orders issued to PEC employers."],
-      "training-pipeline": ["JATC Training & Labor Shortage Index (PLSI)", "Pillar I & Pillar VI: Trailing 4-quarter empirical evaluation separating rapid tactical upskilling from long-term apprentice core curriculum governance."]
+      "training-pipeline": ["JATC Training & Labor Shortage Index (PLSI)", "Pillar I & Pillar VI: Trailing 4-quarter empirical evaluation separating modular continuing education from registered apprentice core curriculum governance."]
     };
 
     if (titles[tabId]) {
@@ -304,6 +304,14 @@ class GuildHallApp {
     this.requisitions.forEach(r => {
       const tr = document.createElement("tr");
       const statusClass = r.status === "PENDING" ? "badge-active" : (r.status === "REFERRED" ? "badge-success" : "badge-subtle");
+
+      let plsiBadge = "";
+      if (r.required_endorsement === "SE-CLD") {
+        plsiBadge = `<span class="badge" style="background:rgba(245,158,11,0.2); color:#f59e0b; font-size:9.5px; padding:1px 4px; font-weight:600; margin-left:4px;">PLSI 25% Deficit</span>`;
+      } else if (r.required_endorsement === "SE-ICS") {
+        plsiBadge = `<span class="badge" style="background:rgba(245,158,11,0.2); color:#f59e0b; font-size:9.5px; padding:1px 4px; font-weight:600; margin-left:4px;">PLSI 20% Deficit</span>`;
+      }
+
       tr.innerHTML = `
         <td data-label="Requisition ID" style="font-family:monospace; font-weight:700;">${escapeHTML(r.requisition_id)}</td>
         <td data-label="Employer">
@@ -314,6 +322,7 @@ class GuildHallApp {
         <td data-label="Required Tier">
           <span class="badge badge-primary">${escapeHTML(r.required_tier)}</span>
           ${r.required_endorsement && r.required_endorsement !== 'None' ? `<span class="badge badge-subtle" style="font-size:10px; margin-left:4px;">${escapeHTML(r.required_endorsement)}</span>` : ''}
+          ${plsiBadge}
         </td>
         <td data-label="Modality &amp; Clearance">
           <span style="font-size:11px;">${escapeHTML(r.work_modality)}</span><br>
@@ -493,6 +502,27 @@ class GuildHallApp {
   openRequisitionModal() {
     const modal = document.getElementById("modal-requisition");
     if (modal) modal.style.display = "flex";
+
+    const endSelect = document.getElementById("modal-endorsement");
+    if (endSelect && !endSelect.dataset.listenerBound) {
+      endSelect.dataset.listenerBound = "true";
+      endSelect.addEventListener("change", (e) => {
+        const val = e.target.value;
+        const advisory = document.getElementById("modal-plsi-advisory");
+        const textSpan = document.getElementById("modal-plsi-advisory-text");
+        if (!advisory) return;
+
+        if (val === "SE-CLD") {
+          advisory.style.display = "block";
+          if (textSpan) textSpan.textContent = "SE-CLD is classified as a Persistent Structural Deficit (PLSI 25.0% >= 20%). Accelerated traveler referral (Book 2/Book 3) and Supervised Specialty Trainee dispatch under an active Master of Record are authorized.";
+        } else if (val === "SE-ICS") {
+          advisory.style.display = "block";
+          if (textSpan) textSpan.textContent = "SE-ICS is classified as a Persistent Structural Deficit (PLSI 20.0% >= 20%). Multi-district traveler referral and Supervised Specialty Trainee dispatch under an active Master of Record are authorized.";
+        } else {
+          advisory.style.display = "none";
+        }
+      });
+    }
   }
 
   closeRequisitionModal() {
@@ -530,6 +560,44 @@ class GuildHallApp {
   quickDispatch(tradeId) {
     this.switchTab("requisitions");
   }
+
+  filterPLSI(category) {
+    document.querySelectorAll("[data-plsi-filter]").forEach(btn => {
+      btn.classList.toggle("active", btn.getAttribute("data-plsi-filter") === category);
+    });
+
+    const rows = document.querySelectorAll("#plsi-tbody tr");
+    rows.forEach(tr => {
+      const rowCat = tr.getAttribute("data-plsi-category");
+      if (category === "ALL" || rowCat === category) {
+        tr.style.display = "";
+      } else {
+        tr.style.display = "none";
+      }
+    });
+  }
+
+  openLabEnrollModal(labName, hours, localName, endorsementCode) {
+    const modal = document.getElementById("modal-lab-enroll");
+    if (!modal) return;
+    document.getElementById("lab-enroll-name").textContent = labName;
+    document.getElementById("lab-enroll-hours").textContent = `${hours} Hours Modular RTI`;
+    document.getElementById("lab-enroll-local").textContent = localName;
+    document.getElementById("lab-enroll-endorsement").textContent = endorsementCode || "SE-XXXX";
+    modal.style.display = "flex";
+  }
+
+  closeLabEnrollModal() {
+    const modal = document.getElementById("modal-lab-enroll");
+    if (modal) modal.style.display = "none";
+  }
+
+  confirmLabEnroll() {
+    this.closeLabEnrollModal();
+    const labName = document.getElementById("lab-enroll-name").textContent;
+    alert(`JATC Enrollment Confirmed: Voucher issued for ${labName}. Zero-tuition instruction verified under Taft-Hartley JATC Training Trust.`);
+  }
+
 }
 
 document.addEventListener("DOMContentLoaded", () => {
