@@ -89,27 +89,31 @@
       <strong style="color:var(--accent-cyan);">CLIENT-SIDE DEMONSTRATION SANDBOX:</strong> Bilateral requisition matching, queue aging alerts, and referral slip generation compute locally in browser memory. Standalone Python backend engine available in repository.
     </div>
   </div>
-  <!-- Navigation Ribbon (5-Workspace Ecosystem Standard Layout) -->
+  <!-- Navigation Ribbon (6-Workspace Ecosystem Layout) -->
   <nav class="nav-ribbon">
     <div class="container nav-tabs-container">
       <button class="tab-btn active" data-tab="dispatch-queue" onclick="window.app.switchTab('dispatch-queue')">
-        <span>1. Out-of-Work Registers</span>
+        <span>Out-of-Work Registers</span>
         <span class="tab-badge" id="badge-queue-count">0</span>
       </button>
       <button class="tab-btn" data-tab="regional-districts" onclick="window.app.switchTab('regional-districts')">
-        <span>2. Regional Districts &amp; Pay</span>
+        <span>Regional Districts &amp; Pay</span>
         <span class="tab-badge" id="badge-locals-count">5</span>
       </button>
       <button class="tab-btn" data-tab="requisitions" onclick="window.app.switchTab('requisitions')">
-        <span>3. Employer Requisitions</span>
+        <span>Labor Requisitions</span>
         <span class="tab-badge" id="badge-req-count">0</span>
       </button>
       <button class="tab-btn" data-tab="referral-workbench" onclick="window.app.switchTab('referral-workbench')">
-        <span>4. Dispatch Officer Workbench</span>
+        <span>Dispatch Workbench</span>
       </button>
       <button class="tab-btn" data-tab="referral-history" onclick="window.app.switchTab('referral-history')">
-        <span>5. Referral Slips Issued</span>
+        <span>Referrals Issued</span>
         <span class="tab-badge" id="badge-slip-count">0</span>
+      </button>
+      <button class="tab-btn" data-tab="training-pipeline" onclick="window.app.switchTab('training-pipeline')">
+        <span>Training &amp; Market Index</span>
+        <span class="tab-badge" style="background:rgba(14,165,233,0.25); color:var(--accent-cyan); border:1px solid rgba(14,165,233,0.4);">PLSI</span>
       </button>
     </div>
   </nav>
@@ -177,7 +181,7 @@
                   <th class="col-local">Local</th>
                   <th class="col-book">Dispatch Book</th>
                   <th class="col-queue-days">Queue Aging</th>
-                  <th class="col-modality">Modality &amp; Clearance</th>
+                  <th class="col-modality">Modality</th>
                   <th class="col-hours">Verified</th>
                   <th class="col-action">Action</th>
                 </tr>
@@ -274,11 +278,175 @@
                 </tr>
               </thead>
               <tbody id="slips-tbody"></tbody>
+
+      <!-- TAB 6: TRAINING & MARKET INDEX (PLSI) -->
+      <section id="tab-training-pipeline" class="tab-pane">
+        <div class="card mb-4">
+          <div class="card-header" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
+            <div>
+              <h3>JATC Training &amp; Persistent Labor Shortage Index (PLSI)</h3>
+              <span class="card-subtitle">Pillar I &amp; Pillar VI: Trailing 4-quarter empirical evaluation separating rapid tactical upskilling from long-term apprentice core curriculum governance.</span>
+            </div>
+            <div style="display:flex; gap:8px;">
+              <span class="badge badge-active" style="padding:6px 10px; font-size:11px;">JATC Review Cycle: Q4 2026</span>
+              <span class="badge badge-primary" style="padding:6px 10px; font-size:11px;">Pipeline Stability Weight: 1.00</span>
+            </div>
+          </div>
+
+          <!-- Top Metric Cards -->
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:12px; margin-bottom:20px;">
+            <div style="background:var(--bg-secondary); border:1px solid var(--border-color); border-radius:8px; padding:12px 14px;">
+              <div style="font-size:11px; text-transform:uppercase; color:var(--text-muted); font-weight:600; letter-spacing:0.04em;">Trailing PLSI Baseline</div>
+              <div style="font-size:22px; font-weight:700; color:var(--accent-cyan); margin:4px 0 2px 0;">14.2%</div>
+              <div style="font-size:11.5px; color:var(--text-secondary);">Sub-threshold (Core Curriculum Stable &lt; 20%)</div>
+            </div>
+            <div style="background:var(--bg-secondary); border:1px solid var(--border-color); border-radius:8px; padding:12px 14px;">
+              <div style="font-size:11px; text-transform:uppercase; color:var(--text-muted); font-weight:600; letter-spacing:0.04em;">Active Upskilling Labs</div>
+              <div style="font-size:22px; font-weight:700; color:#38bdf8; margin:4px 0 2px 0;">3 Offerings</div>
+              <div style="font-size:11.5px; color:var(--text-secondary);">16 - 40 hr weekend intensive continuing ed</div>
+            </div>
+            <div style="background:var(--bg-secondary); border:1px solid var(--border-color); border-radius:8px; padding:12px 14px;">
+              <div style="font-size:11px; text-transform:uppercase; color:var(--text-muted); font-weight:600; letter-spacing:0.04em;">Transient Surge Dampening</div>
+              <div style="font-size:22px; font-weight:700; color:#10b981; margin:4px 0 2px 0;">1 Fad Filtered</div>
+              <div style="font-size:11.5px; color:var(--text-secondary);">SE-AIML spike absorbed without curriculum whip-saw</div>
+            </div>
+            <div style="background:var(--bg-secondary); border:1px solid var(--border-color); border-radius:8px; padding:12px 14px;">
+              <div style="font-size:11px; text-transform:uppercase; color:var(--text-muted); font-weight:600; letter-spacing:0.04em;">Structural Gaps Identified</div>
+              <div style="font-size:22px; font-weight:700; color:#f59e0b; margin:4px 0 2px 0;">2 Endorsements</div>
+              <div style="font-size:11.5px; color:var(--text-secondary);">SE-CLD (25.0%) &amp; SE-ICS (20.0%) sustained &gt;= 20%</div>
+            </div>
+          </div>
+        </div>
+      </section>
             </table>
           </div>
         </div>
       </section>
     </main>
+
+          <!-- Section 1: Tactical Continuing Ed Offerings -->
+          <div style="margin-bottom:24px;">
+            <div style="margin-bottom:10px;">
+              <h4 style="margin:0; font-size:14px; font-weight:700; color:#fff;">Horizon 1: Tactical JATC Continuing Education (Short-Term Up-skilling)</h4>
+              <p style="margin:2px 0 0 0; font-size:12px; color:var(--text-secondary);">Elective 16 - 40 hour modular lab sessions for active Journeymen and Apprentices awaiting dispatch. Zero disruption to 8,000-hour core rotational baselines.</p>
+            </div>
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:12px;">
+              <div style="background:var(--bg-card); border:1px solid var(--border-color); border-left:3px solid var(--accent-cyan); border-radius:6px; padding:12px 14px;">
+                <div style="display:flex; justify-content:space-between; align-items:baseline;">
+                  <strong style="color:#fff; font-size:13px;">Applied OT/ICS Defensive Lab</strong>
+                  <span class="badge badge-subtle" style="font-size:10px;">32 Hours</span>
+                </div>
+                <div style="font-size:11.5px; color:var(--text-muted); margin:4px 0 8px 0;">Target: SE-ICS Specialty Endorsement Preparation</div>
+                <div style="font-size:12px; color:var(--text-secondary); line-height:1.4;">PLC packet dissection, Modbus protocol hardening, and SCADA network segmentation.</div>
+                <div style="margin-top:10px; display:flex; justify-content:space-between; align-items:center;">
+                  <span style="font-size:11px; color:#10b981; font-weight:600;">Local 101 Range (6 Seats Left)</span>
+                  <button class="btn btn-secondary btn-sm" style="font-size:11px; padding:3px 8px;" onclick="alert('JATC Registration recorded.')">Enroll in Lab</button>
+                </div>
+              </div>
+
+              <div style="background:var(--bg-card); border:1px solid var(--border-color); border-left:3px solid #38bdf8; border-radius:6px; padding:12px 14px;">
+                <div style="display:flex; justify-content:space-between; align-items:baseline;">
+                  <strong style="color:#fff; font-size:13px;">Multi-Cloud Zero-Trust ICAM Lab</strong>
+                  <span class="badge badge-subtle" style="font-size:10px;">24 Hours</span>
+                </div>
+                <div style="font-size:11.5px; color:var(--text-muted); margin:4px 0 8px 0;">Target: SE-CLD &amp; SE-ICAM Endorsements</div>
+                <div style="font-size:12px; color:var(--text-secondary); line-height:1.4;">Automated federation, OIDC/OAuth2 credential posture, and IAM privilege boundaries.</div>
+                <div style="margin-top:10px; display:flex; justify-content:space-between; align-items:center;">
+                  <span style="font-size:11px; color:#10b981; font-weight:600;">Virtual Range (12 Seats Left)</span>
+                  <button class="btn btn-secondary btn-sm" style="font-size:11px; padding:3px 8px;" onclick="alert('JATC Registration recorded.')">Enroll in Lab</button>
+                </div>
+              </div>
+
+              <div style="background:var(--bg-card); border:1px solid var(--border-color); border-left:3px solid #a855f7; border-radius:6px; padding:12px 14px;">
+                <div style="display:flex; justify-content:space-between; align-items:baseline;">
+                  <strong style="color:#fff; font-size:13px;">Classified SCIF Protocol Defense</strong>
+                  <span class="badge badge-subtle" style="font-size:10px;">16 Hours</span>
+                </div>
+                <div style="font-size:11.5px; color:var(--text-muted); margin:4px 0 8px 0;">Target: Defense Enclaves &amp; Cleared Roles</div>
+                <div style="font-size:12px; color:var(--text-secondary); line-height:1.4;">TEMPEST zoning, classified media custodianship, and ICD-705 physical security controls.</div>
+                <div style="margin-top:10px; display:flex; justify-content:space-between; align-items:center;">
+                  <span style="font-size:11px; color:#10b981; font-weight:600;">Local 302 Range (4 Seats Left)</span>
+                  <button class="btn btn-secondary btn-sm" style="font-size:11px; padding:3px 8px;" onclick="alert('JATC Registration recorded.')">Enroll in Lab</button>
+                </div>
+              </div>
+            </div>
+
+          <!-- Section 2: Persistent Labor Shortage Index Trailing Table -->
+          <div>
+            <div style="margin-bottom:10px;">
+              <h4 style="margin:0; font-size:14px; font-weight:700; color:#fff;">Horizon 2: Trailing 4-Quarter Evaluation Desk (Persistent Labor Shortage Index)</h4>
+              <p style="margin:2px 0 0 0; font-size:12px; color:var(--text-secondary);">Formal apprentice curriculum reallocations require sustained PLSI &gt;= 20% across at least 3 consecutive quarters. Temporary market surges do not trigger core rotational pipeline overhauls.</p>
+            </div>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Specialty Domain / Endorsement</th>
+                    <th style="text-align:right;">Q1 Rate</th>
+                    <th style="text-align:right;">Q2 Rate</th>
+                    <th style="text-align:right;">Q3 Rate</th>
+                    <th style="text-align:right;">Q4 Rate</th>
+                    <th style="text-align:right;">4-Q Average</th>
+                    <th>Shortage Classification</th>
+                    <th>JATC Tripartite Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>SE-CLD (Cloud Security Architecture)</strong></td>
+                    <td style="text-align:right; font-family:monospace;">24.0%</td>
+                    <td style="text-align:right; font-family:monospace;">22.0%</td>
+                    <td style="text-align:right; font-family:monospace;">26.0%</td>
+                    <td style="text-align:right; font-family:monospace;">28.0%</td>
+                    <td style="text-align:right; font-family:monospace; font-weight:700; color:#f59e0b;">25.0%</td>
+                    <td><span class="badge" style="background:rgba(245,158,11,0.2); color:#f59e0b;">Persistent Deficit</span></td>
+                    <td style="font-size:12px; color:var(--accent-cyan); font-weight:600;">JATC Ratification: Expand Core Rotations</td>
+                  </tr>
+                  <tr>
+                    <td><strong>SE-ICS (Industrial Control &amp; OT Systems)</strong></td>
+                    <td style="text-align:right; font-family:monospace;">18.0%</td>
+                    <td style="text-align:right; font-family:monospace;">19.5%</td>
+                    <td style="text-align:right; font-family:monospace;">21.0%</td>
+                    <td style="text-align:right; font-family:monospace;">21.5%</td>
+                    <td style="text-align:right; font-family:monospace; font-weight:700; color:#f59e0b;">20.0%</td>
+                    <td><span class="badge" style="background:rgba(245,158,11,0.2); color:#f59e0b;">Persistent Deficit</span></td>
+                    <td style="font-size:12px; color:var(--accent-cyan); font-weight:600;">JATC Ratification: Subsidize Lab Hardware</td>
+                  </tr>
+                  <tr>
+                    <td><strong>SE-AIML (AI / ML Pipeline Defense)</strong></td>
+                    <td style="text-align:right; font-family:monospace; color:#ef4444; font-weight:600;">35.0%</td>
+                    <td style="text-align:right; font-family:monospace;">12.0%</td>
+                    <td style="text-align:right; font-family:monospace;">8.0%</td>
+                    <td style="text-align:right; font-family:monospace;">6.0%</td>
+                    <td style="text-align:right; font-family:monospace; font-weight:700; color:#10b981;">15.2%</td>
+                    <td><span class="badge" style="background:rgba(16,185,129,0.2); color:#10b981;">Transient Fad Decay</span></td>
+                    <td style="font-size:12px; color:var(--text-muted);">Hold Baseline (Absorbed via Electives)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>SE-OFF (Offensive Security &amp; Pen Testing)</strong></td>
+                    <td style="text-align:right; font-family:monospace;">10.0%</td>
+                    <td style="text-align:right; font-family:monospace;">11.0%</td>
+                    <td style="text-align:right; font-family:monospace;">9.5%</td>
+                    <td style="text-align:right; font-family:monospace;">10.0%</td>
+                    <td style="text-align:right; font-family:monospace; font-weight:700; color:#10b981;">10.1%</td>
+                    <td><span class="badge badge-active">Balanced Supply</span></td>
+                    <td style="font-size:12px; color:var(--text-muted);">Standard Maintenance (No Action Required)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>SE-DFIR (Digital Forensics &amp; Incident Resp)</strong></td>
+                    <td style="text-align:right; font-family:monospace;">8.0%</td>
+                    <td style="text-align:right; font-family:monospace;">7.5%</td>
+                    <td style="text-align:right; font-family:monospace;">8.5%</td>
+                    <td style="text-align:right; font-family:monospace;">9.0%</td>
+                    <td style="text-align:right; font-family:monospace; font-weight:700; color:#10b981;">8.2%</td>
+                    <td><span class="badge badge-active">Balanced Supply</span></td>
+                    <td style="font-size:12px; color:var(--text-muted);">Standard Maintenance (No Action Required)</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          </div>
 
   <div id="modal-requisition" class="modal-backdrop" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); align-items:center; justify-content:center; z-index:1000;">
     <div class="modal-content" style="background:var(--bg-card); padding:24px; border-radius:10px; max-width:600px; width:100%; border:1px solid var(--border-color);">

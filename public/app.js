@@ -49,7 +49,8 @@ class GuildHallApp {
       "regional-districts": ["Regional District Hubs & MSA Wage Schedules", "Pillar II & Pillar VI: Five permanent Regional District Hubs establishing statutory RJPB wage floors and MSA differentials."],
       "requisitions": ["PEC Employer Labor Requisitions", "Formal labor demands submitted by Participating Employer Council organizations."],
       "referral-workbench": ["Guild Dispatch Officer Referral Desk", "Neutral verification matching qualifying FIFO candidates to active employer requisitions."],
-      "referral-history": ["Bilateral Dispatch Referral Slips", "Tamper-evident referral orders issued to PEC employers."]
+      "referral-history": ["Bilateral Dispatch Referral Slips", "Tamper-evident referral orders issued to PEC employers."],
+      "training-pipeline": ["JATC Training & Labor Shortage Index (PLSI)", "Pillar I & Pillar VI: Trailing 4-quarter empirical evaluation separating rapid tactical upskilling from long-term apprentice core curriculum governance."]
     };
 
     if (titles[tabId]) {
@@ -229,9 +230,13 @@ class GuildHallApp {
 
       const endorsements = m.active_endorsements.map(e => `<span class="badge badge-subtle" style="font-size:10px; margin-right:4px;">${escapeHTML(e)}</span>`).join("");
 
-      const clearanceShort = m.security_clearance
-        .replace("Public Trust / Commercial Unclassified", "Public Trust")
-        .replace("TS/SCI (SCIF Eligible)", "TS/SCI (SCIF)");
+      const modalityShort = m.work_modality_preference.replace(" Only", "");
+      let clearanceBadge = "";
+      if (m.security_clearance.includes("TS/SCI")) {
+        clearanceBadge = `<br><span class="badge" style="background:rgba(239,68,68,0.2); color:#ef4444; font-size:9.5px; padding:1px 4px; font-weight:600;">TS/SCI</span>`;
+      } else if (m.security_clearance.includes("Secret")) {
+        clearanceBadge = `<br><span class="badge" style="background:rgba(245,158,11,0.2); color:#f59e0b; font-size:9.5px; padding:1px 4px; font-weight:600;">Secret</span>`;
+      }
 
       tr.innerHTML = `
         <td class="col-rank" data-label="FIFO Rank" style="font-weight:700;">${rankBadge}</td>
@@ -253,9 +258,9 @@ class GuildHallApp {
           <strong style="${agingAlert ? 'color:#ef4444;' : ''}">${m.days_seeking_placement} days</strong>
           ${agingAlert ? '<br><span class="badge" style="background:rgba(239,68,68,0.2); color:#ef4444; font-size:9px; padding:1px 4px;">AGING &gt;= 30d</span>' : ''}
         </td>
-        <td class="col-modality" data-label="Modality &amp; Clearance">
-          <span style="font-size:11px; font-weight:600;">${escapeHTML(m.work_modality_preference)}</span><br>
-          <span style="font-size:10px; color:var(--text-muted);">${escapeHTML(clearanceShort)}</span>
+        <td class="col-modality" data-label="Modality">
+          <span class="badge badge-subtle" style="font-size:10.5px; font-weight:600;">${escapeHTML(modalityShort)}</span>
+          ${clearanceBadge}
         </td>
         <td class="col-hours" data-label="Verified Hours" style="font-family:monospace; font-size:11px;">${m.total_verified_hours.toLocaleString()} h</td>
         <td class="col-action" data-label="Action">
